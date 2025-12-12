@@ -1,0 +1,45 @@
+body {
+  margin: 0;
+  font-family: Arial;
+}
+
+.card {
+  border: 1px solid #ccc;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  width: 300px;
+}
+
+button {
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(8, 40px);
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.seat {
+  width: 40px;
+  height: 40px;
+  border: 1px solid #555;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.seat.booked {
+  background: gray;
+  color: white;
+  cursor: not-allowed;
+}
+
+.seat.selected {
+  background: green;
+  color: white;
+}

@@ -1,0 +1,33 @@
+-- schema.sql
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+CREATE TABLE IF NOT EXISTS shows (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  name TEXT NOT NULL,
+  start_time TIMESTAMP WITH TIME ZONE NOT NULL,
+  total_seats INTEGER NOT NULL,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS seats (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  show_id UUID REFERENCES shows(id) ON DELETE CASCADE,
+  seat_no INTEGER NOT NULL,
+  status TEXT NOT NULL DEFAULT 'AVAILABLE', -- AVAILABLE, LOCKED, BOOKED
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
+  UNIQUE (show_id, seat_no)
+);
+
+CREATE TABLE IF NOT EXISTS bookings (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  show_id UUID REFERENCES shows(id) ON DELETE CASCADE,
+  status TEXT NOT NULL, -- PENDING, CONFIRMED, FAILED
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS booking_seats (
+  booking_id UUID REFERENCES bookings(id) ON DELETE CASCADE,
+  seat_id UUID REFERENCES seats(id) ON DELETE CASCADE,
+  PRIMARY KEY (booking_id, seat_id)
+);
